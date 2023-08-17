@@ -46,3 +46,14 @@ jobs:
 
       - name: Upload images directory to image S3
         run: aws s3 cp images s3://${{ secrets.IMAGE_S3_BUCKET }} --recursive --acl public-read
+
+  # Deploy
+      - name: Deploy
+        run: |
+          aws deploy create-deployment \
+          --application-name birca-cicid \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --deployment-group-name cicid-project \
+          --file-exists-behavior OVERWRITE \
+          --s3-location bucket=project-bucket-v1,bundleType=zip,key=birca-application/$GITHUB_SHA.zip \
+          --region ap-northeast-2 \
