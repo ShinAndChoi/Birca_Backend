@@ -22,6 +22,7 @@ jobs:
 
       - name: Install node modules
         run: npm install
+        working-directory: ./birca
         
       - name: Build 
         run: CI=false npm run build
