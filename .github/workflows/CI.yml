@@ -23,6 +23,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'cmhyuk'
+      - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
