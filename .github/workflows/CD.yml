@@ -22,12 +22,20 @@ jobs:
 
       - name: Install node modules
         run: npm install
+        working-directory: ./birca
         
       - name: Build 
         run: CI=false npm run build
 
       - name: Upload build directory to deploy S3
         run: aws s3 cp build s3://${{ secrets.DEPLOY_S3_BUCKET }} --recursive --acl public-read
+
+      - name: Update JWT, Invoke URL, and Service Key in application.yml
+        run: |
+          echo "jwt.jwt-key=${{ secrets.JWT_KEY }}" > ./birca/src/main/resources/application.yml
+          echo "invoke-url.url=${{ secrets.INVOKE_URL }}" >> ./birca/src/main/resources/application.yml
+          echo "service-key.key=${{ secrets.SERVICE_KEY }}" >> ./birca/src/main/resources/application.yml
+        working-directory: ./birca
 
   upload-images:
     name: Upload Images to S3
