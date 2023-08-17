@@ -47,6 +47,17 @@ jobs:
       - name: Upload images directory to image S3
         run: aws s3 cp images s3://${{ secrets.IMAGE_S3_BUCKET }} --recursive --acl public-read
 
+  invoke-api:
+    name: Invoke API
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure JWT, Invoke URL, and Service Key
+        run: |
+          echo "jwt.jwt-key=${{ secrets.JWT_KEY }}" > ./src/main/resources/application.yml
+          echo "invoke-url.url=${{ secrets.INVOKE_URL }}" >> ./src/main/resources/application.yml
+          echo "service-key.key=${{ secrets.SERVICE_KEY }}" >> ./src/main/resources/application.yml
+
   # Deploy
       - name: Deploy
         run: |
