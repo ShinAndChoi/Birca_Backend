@@ -59,9 +59,9 @@ jobs:
       - name: Deploy
         run: |
           aws deploy create-deployment \
-          --application-name birca-cicid \
+          --application-name birca-cicd \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
-          --deployment-group-name cicid-project \
+          --deployment-group-name cicd-project \
           --file-exists-behavior OVERWRITE \
           --s3-location bucket=project-bucket-v1,bundleType=zip,key=birca-application/$GITHUB_SHA.zip \
           --region ap-northeast-2 \
