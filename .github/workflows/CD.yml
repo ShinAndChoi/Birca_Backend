@@ -32,9 +32,9 @@ jobs:
 
       - name: Update JWT, Invoke URL, and Service Key in application.yml
         run: |
-          echo "jwt.jwt-key=${{ secrets.JWT_KEY }}" > ./birca/src/main/resources/application.yml
-          echo "invoke-url.url=${{ secrets.INVOKE_URL }}" >> ./birca/src/main/resources/application.yml
-          echo "service-key.key=${{ secrets.SERVICE_KEY }}" >> ./birca/src/main/resources/application.yml
+          echo "jwt.jwt-key=${{ secrets.JWT_KEY }}" > /src/main/resources/application.yml
+          echo "invoke-url.url=${{ secrets.INVOKE_URL }}" >> /src/main/resources/application.yml
+          echo "service-key.key=${{ secrets.SERVICE_KEY }}" >> /src/main/resources/application.yml
         working-directory: ./birca
 
   upload-images:
