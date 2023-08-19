@@ -1,5 +1,6 @@
 package com.app.birca.service;
 
+import com.app.birca.domain.Address;
 import com.app.birca.domain.entity.Cafe;
 import com.app.birca.domain.entity.User;
 import com.app.birca.dto.request.CafeSearchRequest;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -27,16 +29,26 @@ public class CafeService {
 
     private final UserRepository userRepository;
     private final CafeRepository cafeRepository;
+    private final S3Service s3Service;
 
-    public Long saveCafe(LoginUser loginUser, SaveCafeRequest request) {
+    @Transactional
+    public Long saveCafe(LoginUser loginUser, SaveCafeRequest request) throws IOException {
         User user = userRepository.findById(loginUser.getId())
                 .orElseThrow(UserNotFound::new);
+
+        String imageUrl = s3Service.uploadImage(request.getFile());
+
+        Address address = Address.builder()
+                .city(request.getAddress().getCity())
+                .district(request.getAddress().getDistrict())
+                .area(request.getAddress().getArea())
+                .build();
 
         Cafe cafe = Cafe.builder()
                 .cafeName(request.getCafeName())
                 .introduction(request.getIntroduction())
-                .imageUrl(request.getFile().getOriginalFilename())
-                .address(request.getAddress())
+                .imageUrl(imageUrl)
+                .address(address)
                 .user(user)
                 .build();
 
