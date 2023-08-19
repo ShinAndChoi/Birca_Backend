@@ -1,13 +1,14 @@
 package com.app.birca.dto.request;
 
-import com.app.birca.domain.Address;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
+@Setter
 public class SaveCafeRequest {
     private String cafeName;
     private String introduction;
     private MultipartFile file;
-    private Address address;
+    private CafeAddressRequest address;
 }
