@@ -1,6 +1,5 @@
 package com.app.birca.dto.request;
 
-import com.app.birca.domain.Address;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
@@ -12,5 +11,5 @@ public class CafeSearchRequest {
     private String idolName;
     private LocalDate startDate;
     private LocalDate endDate;
-    private Address address;
+    private CafeAddressRequest address;
 }
