@@ -1,8 +1,5 @@
 package com.app.birca.service;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.app.birca.config.S3Config;
 import com.app.birca.domain.entity.BusinessLicense;
 import com.app.birca.domain.entity.User;
 import com.app.birca.dto.request.LoginUser;
@@ -20,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -31,30 +27,17 @@ public class BusinessLicenseService {
     private final NationalTaxService nationalTaxService;
     private final BusinessLicenseRepository businessLicenseRepository;
     private final UserRepository userRepository;
-    private final S3Config s3Config;
-    private final AmazonS3Client amazonS3;
+    private final S3Service s3Service;
 
     public void uploadBusinessLicense(MultipartFile file) throws IOException {
-        String s3FileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
-
-        ObjectMetadata objMeta = new ObjectMetadata();
-        objMeta.setContentLength(file.getInputStream().available());
-        amazonS3.putObject(s3Config.getBucket(), s3FileName, file.getInputStream(), objMeta);
-
-        amazonS3.getUrl(s3Config.getBucket(), s3FileName).toString();
+        s3Service.uploadImage(file);
     }
 
     public void saveRegistrationNumber(LoginUser loginUser, BusinessLicenseResponse businessLicenseResponse) {
         String registrationNumber = getRegisterNumber(businessLicenseResponse);
-        if (businessLicenseRepository.existsByRegistrationNumber(registrationNumber)) {
-            throw new DuplicationRegistrationNumber();
-        }
 
         BusinessLicenseStatus businessLicenseStatus = nationalTaxService.confirmBusinessLicenseStatus(registrationNumber);
-        String taxType = getTaxType(businessLicenseStatus);
-        if (taxType.equals("국세청에 등록되지 않은 사업자등록번호입니다.")) {
-            throw new BusinessRegistrationError();
-        }
+        getTaxType(businessLicenseStatus);
 
         User user = userRepository.findById(loginUser.getId())
                 .orElseThrow(UserNotFound::new);
@@ -70,12 +53,24 @@ public class BusinessLicenseService {
 
     private String getRegisterNumber(BusinessLicenseResponse businessLicenseResponse) {
         //사업자등록증 번호가 610-81-54020이면 -> 6108154020
-        return businessLicenseResponse.getImages().get(0).getBizLicense().getResult()
+        String registrationNumber = businessLicenseResponse.getImages().get(0).getBizLicense().getResult()
                 .getRegisterNumber().get(0).getText().replace("-", "");
+
+        if (businessLicenseRepository.existsByRegistrationNumber(registrationNumber)) {
+            throw new DuplicationRegistrationNumber();
+        }
+
+        return registrationNumber;
     }
 
     private String getTaxType(BusinessLicenseStatus businessLicenseStatus) {
-        return businessLicenseStatus.getData().get(0).getTax_type();
+        String taxType = businessLicenseStatus.getData().get(0).getTax_type();
+
+        if (taxType.equals("국세청에 등록되지 않은 사업자등록번호입니다.")) {
+            throw new BusinessRegistrationError();
+        }
+
+        return taxType;
     }
 
 }
