@@ -25,8 +25,8 @@ public class NationalTaxService {
                 .contentType(APPLICATION_JSON)
                 .bodyValue(request)
                 .retrieve()
-                .bodyToFlux(BusinessLicenseStatus.class)
-                .blockLast();
+                .bodyToMono(BusinessLicenseStatus.class)
+                .block();
     }
 
 }

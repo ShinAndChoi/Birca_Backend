@@ -21,12 +21,12 @@ public class KakaoLoginService {
                 .uri("/v2/user/me")
                 .header("Authorization", "Bearer " + accessToken)
                 .retrieve()
-                .bodyToFlux(GetMemberInfoResponse.class)
+                .bodyToMono(GetMemberInfoResponse.class)
                 .onErrorMap(e -> {
                     log.error("카카오 사용자 정보 조회에 실패하였습니다.", e);
                     return new HttpServerErrorException(INTERNAL_SERVER_ERROR, "카카오 사용자 정보 조회에 실패하였습니다.");
                 })
-                .blockLast();
+                .block();
     }
 
 }
