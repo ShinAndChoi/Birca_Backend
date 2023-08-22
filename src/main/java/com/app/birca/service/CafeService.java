@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -66,8 +67,8 @@ public class CafeService {
                 request.getFile().getOriginalFilename(), user);
     }
 
+    //1. 아이돌 2. 아이돌 + 날짜 3. 아이돌 + 장소 4. 아이돌 + 날짜 + 장소 검색
     public List<CafeSearchResponse> searchCafe(int page, CafeSearchRequest request) {
-        //1. 아이돌 2. 아이돌 + 날짜 3. 아이돌 + 장소 4. 아이돌 + 날짜 + 장소 검색
         List<Cafe> cafes = cafeRepository.getCafeResults(page, request);
         return cafes.stream().map(c -> CafeSearchResponse.builder()
                         .cafeName(c.getCafeName())
@@ -77,6 +78,7 @@ public class CafeService {
                 .collect(toList());
     }
 
+    //카페 상세 페이지
     public CafeResponse getCafeDetails(Long cafeId) {
         Cafe cafe = cafeRepository.findById(cafeId)
                 .orElseThrow(CafeNotFound::new);
@@ -87,6 +89,18 @@ public class CafeService {
                 .introduction(cafe.getIntroduction())
                 .imageUrl(cafe.getImageUrl())
                 .build();
+    }
+
+    //캘린더에서 클릭한 날짜에 대한 카페 검색
+    public List<CafeSearchResponse> findBySelectedDate(LocalDate selectedDate) {
+
+        List<Cafe> cafes = cafeRepository.findBySelectedDate(selectedDate);
+        return cafes.stream().map(c -> CafeSearchResponse.builder()
+                        .cafeName(c.getCafeName())
+                        .address(c.getAddress())
+                        .imageUrl(c.getImageUrl())
+                        .build())
+                .collect(toList());
     }
 
 }
