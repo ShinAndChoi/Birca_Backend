@@ -29,15 +29,17 @@ public class BusinessLicenseService {
     private final UserRepository userRepository;
     private final S3Service s3Service;
 
+    @Transactional
     public void uploadBusinessLicense(MultipartFile file) throws IOException {
         s3Service.uploadImage(file);
     }
 
+    @Transactional
     public void saveRegistrationNumber(LoginUser loginUser, BusinessLicenseResponse businessLicenseResponse) {
         String registrationNumber = getRegisterNumber(businessLicenseResponse);
 
         BusinessLicenseStatus businessLicenseStatus = nationalTaxService.confirmBusinessLicenseStatus(registrationNumber);
-        getTaxType(businessLicenseStatus);
+        validateTaxType(businessLicenseStatus);
 
         User user = userRepository.findById(loginUser.getId())
                 .orElseThrow(UserNotFound::new);
@@ -63,14 +65,11 @@ public class BusinessLicenseService {
         return registrationNumber;
     }
 
-    private String getTaxType(BusinessLicenseStatus businessLicenseStatus) {
+    private void validateTaxType(BusinessLicenseStatus businessLicenseStatus) {
         String taxType = businessLicenseStatus.getData().get(0).getTax_type();
-
         if (taxType.equals("국세청에 등록되지 않은 사업자등록번호입니다.")) {
             throw new BusinessRegistrationError();
         }
-
-        return taxType;
     }
 
 }
