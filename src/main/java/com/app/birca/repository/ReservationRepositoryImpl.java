@@ -18,8 +18,7 @@ public class ReservationRepositoryImpl implements ReservationCustom {
                 .where(
                         reservation.cafe.id.eq(cafeId),
                         reservation.startDate.before(request.getEndDate()),
-                        reservation.endDate.after(request.getStartDate()),
-                        reservation.isReserved.isTrue()
+                        reservation.endDate.after(request.getStartDate())
                 )
                 .fetch().isEmpty();
     }
