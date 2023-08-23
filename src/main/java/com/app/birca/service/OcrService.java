@@ -36,7 +36,6 @@ public class OcrService {
         requestBody.put("images", images);
 
         return webClientConfig.ocr().post()
-                .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .header("X-OCR-SECRET", "TUlRaXpkb21EU2RVd21JamJubm9laG9mQ1JKeHhQVHM=")
                 .bodyValue(requestBody)
                 .retrieve()
