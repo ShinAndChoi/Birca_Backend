@@ -1,6 +1,5 @@
 package com.app.birca.domain.entity;
 
-import com.app.birca.domain.Address;
 import com.app.birca.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -27,9 +26,7 @@ public class Cafe extends BaseEntity {
     private String cafeName;
     private String introduction;
     private String imageUrl;
-
-    @Embedded
-    private Address address;
+    private String address;
 
     @OneToMany(mappedBy = "cafe", cascade = ALL)
     private List<Reservation> reservations = new ArrayList<>();
@@ -39,7 +36,7 @@ public class Cafe extends BaseEntity {
     private User user;
 
     @Builder
-    public Cafe(String cafeName, String introduction, String imageUrl, Address address, User user) {
+    public Cafe(String cafeName, String introduction, String imageUrl, String address, User user) {
         this.cafeName = cafeName;
         this.introduction = introduction;
         this.imageUrl = imageUrl;
@@ -47,10 +44,11 @@ public class Cafe extends BaseEntity {
         this.user = user;
     }
 
-    public void updateCafe(String cafeName, String introduction, String imageUrl, User user) {
+    public void updateCafe(String cafeName, String introduction, String imageUrl, String address, User user) {
         this.cafeName = cafeName;
         this.introduction = introduction;
         this.imageUrl = imageUrl;
+        this.address = address;
         this.user = user;
     }
 
