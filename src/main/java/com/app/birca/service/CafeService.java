@@ -1,6 +1,5 @@
 package com.app.birca.service;
 
-import com.app.birca.domain.Address;
 import com.app.birca.domain.entity.Cafe;
 import com.app.birca.domain.entity.User;
 import com.app.birca.dto.request.CafeSearchRequest;
@@ -9,8 +8,10 @@ import com.app.birca.dto.request.SaveCafeRequest;
 import com.app.birca.dto.request.UpdateCafeRequest;
 import com.app.birca.dto.response.CafeResponse;
 import com.app.birca.dto.response.CafeSearchResponse;
+import com.app.birca.exception.BusinessRegistrationPendingException;
 import com.app.birca.exception.CafeNotFound;
 import com.app.birca.exception.UserNotFound;
+import com.app.birca.repository.BusinessLicenseRepository;
 import com.app.birca.repository.CafeRepository;
 import com.app.birca.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ import static java.util.stream.Collectors.toList;
 @Transactional(readOnly = true)
 public class CafeService {
 
+    private final BusinessLicenseRepository businessLicenseRepository;
     private final UserRepository userRepository;
     private final CafeRepository cafeRepository;
     private final S3Service s3Service;
@@ -37,34 +39,35 @@ public class CafeService {
         User user = userRepository.findById(loginUser.getId())
                 .orElseThrow(UserNotFound::new);
 
-        String imageUrl = s3Service.uploadImage(request.getFile());
+        if (!businessLicenseRepository.existsByUser(user)) {
+            throw new BusinessRegistrationPendingException();
+        }
 
-        Address address = Address.builder()
-                .city(request.getAddress().getCity())
-                .district(request.getAddress().getDistrict())
-                .area(request.getAddress().getArea())
-                .build();
+        String imageUrl = s3Service.uploadImage(request.getFile());
 
         Cafe cafe = Cafe.builder()
                 .cafeName(request.getCafeName())
                 .introduction(request.getIntroduction())
                 .imageUrl(imageUrl)
-                .address(address)
+                .address(request.getAddress())
                 .user(user)
                 .build();
 
         return cafeRepository.save(cafe).getId();
     }
 
+    //카페 수정
     @Transactional
-    public void updateCafe(Long cafeId, UpdateCafeRequest request) {
+    public void updateCafe(Long cafeId, UpdateCafeRequest request) throws IOException {
         Cafe cafe = cafeRepository.findById(cafeId)
                 .orElseThrow(CafeNotFound::new);
 
         User user = cafe.getUser();
 
+        String imageUrl = s3Service.uploadImage(request.getFile());
+
         cafe.updateCafe(request.getCafeName(), request.getIntroduction(),
-                request.getFile().getOriginalFilename(), user);
+                imageUrl, request.getAddress(), user);
     }
 
     //1. 아이돌 2. 아이돌 + 날짜 3. 아이돌 + 장소 4. 아이돌 + 날짜 + 장소 검색
@@ -93,7 +96,6 @@ public class CafeService {
 
     //캘린더에서 클릭한 날짜에 대한 카페 검색
     public List<CafeSearchResponse> findBySelectedDate(LocalDate selectedDate) {
-
         List<Cafe> cafes = cafeRepository.findBySelectedDate(selectedDate);
         return cafes.stream().map(c -> CafeSearchResponse.builder()
                         .cafeName(c.getCafeName())
