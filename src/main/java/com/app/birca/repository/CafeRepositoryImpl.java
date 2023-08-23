@@ -34,12 +34,8 @@ public class CafeRepositoryImpl implements CafeRepositoryCustom {
         }
 
         //장소 검색
-        if (!request.getAddress().getCity().isEmpty() &&
-                !request.getAddress().getDistrict().isEmpty() &&
-                !request.getAddress().getArea().isEmpty()) {
-            predicate.and(cafe.address.city.eq(request.getAddress().getCity()))
-                    .and(cafe.address.district.eq(request.getAddress().getDistrict()))
-                    .and(cafe.address.area.eq(request.getAddress().getArea()));
+        if (request.getAddress() != null) {
+            predicate.and(cafe.address.eq(request.getAddress()));
         }
 
         return queryFactory

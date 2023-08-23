@@ -29,14 +29,12 @@ public class CafeController {
         log.info("cafeName = {} ", request.getCafeName());
         log.info("introduction = {} ", request.getIntroduction());
         log.info("file = {}", request.getFile().getOriginalFilename());
-        log.info("city = {}", request.getAddress().getCity());
-        log.info("district = {}", request.getAddress().getDistrict());
-        log.info("area = {}", request.getAddress().getArea());
+        log.info("area = {}", request.getAddress());
         return cafeService.saveCafe(loginUser, request);
     }
 
     @PatchMapping("/cafe/{cafeId}/update")
-    public void updateCafe(@PathVariable Long cafeId, @ModelAttribute UpdateCafeRequest request) {
+    public void updateCafe(@PathVariable Long cafeId, @ModelAttribute UpdateCafeRequest request) throws IOException {
         log.info("cafeName = {} ", request.getCafeName());
         log.info("introduction = {} ", request.getIntroduction());
         log.info("file = {}", request.getFile().getOriginalFilename());

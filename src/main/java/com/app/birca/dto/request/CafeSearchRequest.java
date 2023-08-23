@@ -11,5 +11,5 @@ public class CafeSearchRequest {
     private String idolName;
     private LocalDate startDate;
     private LocalDate endDate;
-    private CafeAddressRequest address;
+    private String address;
 }
