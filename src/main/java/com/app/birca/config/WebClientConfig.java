@@ -9,6 +9,7 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.util.DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY;
 
 @Configuration
@@ -33,6 +34,7 @@ public class WebClientConfig {
     public WebClient ocr() {
         return WebClient.builder()
                 .baseUrl(invokeUrl)
+                .defaultHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .build();
     }
 
