@@ -22,7 +22,6 @@ public class Reservation extends BaseEntity {
     private Long id;
 
     private String idol;
-    private Boolean isReserved;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -35,10 +34,8 @@ public class Reservation extends BaseEntity {
     private User user;
 
     @Builder
-    public Reservation(String idol, Boolean isReserved, LocalDate startDate, LocalDate endDate,
-                       Cafe cafe, User user) {
+    public Reservation(String idol, LocalDate startDate, LocalDate endDate, Cafe cafe, User user) {
         this.idol = idol;
-        this.isReserved = isReserved;
         this.startDate = startDate;
         this.endDate = endDate;
         this.cafe = cafe;
