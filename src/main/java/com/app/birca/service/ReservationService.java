@@ -7,14 +7,17 @@ import com.app.birca.dto.request.CafeReservationRequest;
 import com.app.birca.dto.request.LoginUser;
 import com.app.birca.exception.CafeNotFound;
 import com.app.birca.exception.DuplicateReservationException;
+import com.app.birca.exception.ReservationNotFound;
 import com.app.birca.exception.UserNotFound;
 import com.app.birca.repository.CafeRepository;
 import com.app.birca.repository.ReservationRepository;
 import com.app.birca.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -25,7 +28,7 @@ public class ReservationService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void reservation(LoginUser loginUser, Long cafeId, CafeReservationRequest request) {
+    public void reserveCafe(LoginUser loginUser, Long cafeId, CafeReservationRequest request) {
         User user = userRepository.findById(loginUser.getId())
                 .orElseThrow(UserNotFound::new);
 
@@ -33,7 +36,7 @@ public class ReservationService {
                 .orElseThrow(CafeNotFound::new);
 
         Boolean isReserved = reservationRepository.isReserved(cafeId, request);
-        System.out.println("isReserved = " + isReserved);
+        log.info("isReserved = {} ", isReserved);
 
         if (!isReserved) {
             throw new DuplicateReservationException();
@@ -44,11 +47,17 @@ public class ReservationService {
                 .cafe(cafe)
                 .startDate(request.getStartDate())
                 .endDate(request.getEndDate())
-                .isReserved(true)
                 .user(user)
                 .build();
 
         reservationRepository.save(reservation);
     }
 
+    @Transactional
+    public void cancelCafeReservation(Long reservationId, LoginUser loginUser) {
+        Reservation reservation = reservationRepository.findByIdAndUserId(reservationId, loginUser.getId())
+                .orElseThrow(ReservationNotFound::new);
+
+        reservationRepository.delete(reservation);
+    }
 }
