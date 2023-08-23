@@ -9,5 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class UpdateCafeRequest {
     private String cafeName;
     private String introduction;
+    private String address;
     private MultipartFile file;
 }
