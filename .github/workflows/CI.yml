@@ -33,7 +33,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           RDS_HOST: ${{ secrets.RDS_HOST }}
-          RDS_NAME: ${{ secrets.RDS_NAME }}
+          RDS_NAME: ${{ secrets.RDS_USERNAME }}
           RDS_PASSWORD: ${{ secrets.RDS_PASSWORD }}
         run: |
           echo "Using JWT_KEY: $JWT_KEY"
