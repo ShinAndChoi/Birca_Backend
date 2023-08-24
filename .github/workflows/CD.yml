@@ -81,5 +81,5 @@ jobs:
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name birca-cicd-prod \
           --file-exists-behavior OVERWRITE \
-          --s3-location bucket=birca-deploy-bucket,bundleType=zip,key=a/$GITHUB_SHA.zip \
+          --s3-location bucket=birca-deploy-bucket,bundleType=zip,key=birca-application/$GITHUB_SHA.zip \
           --region ap-northeast-2 \
