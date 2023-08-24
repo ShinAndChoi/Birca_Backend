@@ -9,7 +9,7 @@ on:
 # 해당 yml 내에서 사용할 key - value
 env:
   S3_BUCKET_NAME: birca-deploy-bucket
-  PROJECT_NAME: birc
+  PROJECT_NAME: birca
 
 # workflow는 한개 이상의 job을 가지며, 각 job은 여러 step에 따라 단계를 나눌 수 있습니다.
 jobs:
@@ -36,8 +36,8 @@ jobs:
           JWT_KEY: ${{ secrets.JWT_KEY }}
           INVOKE_URL: ${{ secrets.INVOKE_URL }}
           SERVICE_KEY: ${{ secrets.SERVICE_KEY }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_S3_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_S3_SECRET_KEY }}
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           RDS_HOST: ${{ secrets.RDS_HOST }}
           RDS_NAME: ${{ secrets.RDS_NAME }}
@@ -61,8 +61,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_S3_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_S3_SECRET_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-region: ap-northeast-2
 
       # script files 복사
