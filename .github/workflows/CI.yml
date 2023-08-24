@@ -46,29 +46,3 @@ jobs:
           echo "Using USERNAME: $RDS_NAME"
           echo "Using PASSWORD: $RDS_PASSWORD"
           ./gradlew clean build --exclude-task test
-
-      - name: Configure AWS credentials
-          uses: aws-actions/configure-aws-credentials@v1
-          with:
-            aws-access-key-id: ${{ secrets.AWS_S3_ACCESS_KEY_ID }}
-            aws-secret-access-key: ${{ secrets.AWS_S3_SECRET_KEY }}
-            aws-region: ${{ secrets.AWS_REGION }}
-
-            # script files 복사
-            - name: Copy script
-              run: cp ./scripts/*.sh ./deploy
-
-            # S3에 업로드
-            - name: Upload to S3
-              run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://birca-deploy-bucket/$PROJECT_NAME/$GITHUB_SHA.zip
-
-              # Deploy
-            - name: Deploy
-              run: |
-                aws deploy create-deployment \
-                --application-name birca-cicd \
-                --deployment-config-name CodeDeployDefault.AllAtOnce \
-                --deployment-group-name cicd-project \
-                --file-exists-behavior OVERWRITE \
-                --s3-location bucket=project-bucket-v1,bundleType=zip,key=birca-application/$GITHUB_SHA.zip \
-                --region ap-northeast-2 \
