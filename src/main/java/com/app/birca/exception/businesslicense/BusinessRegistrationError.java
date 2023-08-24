@@ -1,4 +1,6 @@
-package com.app.birca.exception;
+package com.app.birca.exception.businesslicense;
+
+import com.app.birca.exception.BircaException;
 
 public class BusinessRegistrationError extends BircaException {
 

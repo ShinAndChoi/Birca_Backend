@@ -8,7 +8,7 @@ import com.app.birca.dto.request.SaveCafeRequest;
 import com.app.birca.dto.request.UpdateCafeRequest;
 import com.app.birca.dto.response.CafeResponse;
 import com.app.birca.dto.response.CafeSearchResponse;
-import com.app.birca.exception.BusinessRegistrationPendingException;
+import com.app.birca.exception.businesslicense.BusinessRegistrationPendingException;
 import com.app.birca.exception.CafeNotFound;
 import com.app.birca.exception.UserNotFound;
 import com.app.birca.repository.BusinessLicenseRepository;
