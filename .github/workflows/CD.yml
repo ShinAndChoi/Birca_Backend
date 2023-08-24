@@ -21,7 +21,7 @@ jobs:
     steps:
       # 작업에서 액세스할 수 있도록 $GITHUB_WORKSPACE에서 저장소를 체크아웃합니다.
       - uses: actions/checkout@v2
-      - name: Set up JDK 11
+      - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
           java-version: '17'
@@ -77,9 +77,9 @@ jobs:
       - name: Deploy
         run: |
           aws deploy create-deployment \
-          --application-name birca-cicd \
+          --application-name birca-codedeploy-application \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
-          --deployment-group-name cicd-project \
+          --deployment-group-name birca-cicd-prod \
           --file-exists-behavior OVERWRITE \
           --s3-location bucket=birca-deploy-bucket,bundleType=zip,key=birca-application/$GITHUB_SHA.zip \
           --region ap-northeast-2 \
