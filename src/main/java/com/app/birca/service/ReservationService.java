@@ -28,7 +28,7 @@ public class ReservationService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void reserveCafe(LoginUser loginUser, Long cafeId, CafeReservationRequest request) {
+    public Long reserveCafe(LoginUser loginUser, Long cafeId, CafeReservationRequest request) {
         User user = userRepository.findById(loginUser.getId())
                 .orElseThrow(UserNotFound::new);
 
@@ -50,14 +50,13 @@ public class ReservationService {
                 .user(user)
                 .build();
 
-        reservationRepository.save(reservation);
+        return reservationRepository.save(reservation).getId();
     }
 
     @Transactional
     public void cancelCafeReservation(Long reservationId, LoginUser loginUser) {
         Reservation reservation = reservationRepository.findByIdAndUserId(reservationId, loginUser.getId())
                 .orElseThrow(ReservationNotFound::new);
-
         reservationRepository.delete(reservation);
     }
 }
