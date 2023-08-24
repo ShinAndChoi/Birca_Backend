@@ -32,27 +32,27 @@ jobs:
         shell: bash
 
       - name: Build with Gradle
-          env:
-            JWT_KEY: ${{ secrets.JWT_KEY }}
-            INVOKE_URL: ${{ secrets.INVOKE_URL }}
-            SERVICE_KEY: ${{ secrets.SERVICE_KEY }}
-            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-            RDS_HOST: ${{ secrets.RDS_HOST }}
-            RDS_NAME: ${{ secrets.RDS_NAME }}
-            RDS_PASSWORD: ${{ secrets.RDS_PASSWORD }}
-          run: |
-            echo "Using JWT_KEY: $JWT_KEY"
-            echo "Using INVOKE_URL: $INVOKE_URL"
-            echo "Using SERVICE_KEY: $SERVICE_KEY"
-            echo "Using AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
-            echo "Using AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY"
-            echo "Using AWS_S3_BUCKET: $AWS_S3_BUCKET"
-            echo "Using URL: $RDS_HOST"
-            echo "Using USERNAME: $RDS_NAME"
-            echo "Using PASSWORD: $RDS_PASSWORD"
-            ./gradlew clean build --exclude-task test
+        env:
+          JWT_KEY: ${{ secrets.JWT_KEY }}
+          INVOKE_URL: ${{ secrets.INVOKE_URL }}
+          SERVICE_KEY: ${{ secrets.SERVICE_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          RDS_HOST: ${{ secrets.RDS_HOST }}
+          RDS_NAME: ${{ secrets.RDS_NAME }}
+          RDS_PASSWORD: ${{ secrets.RDS_PASSWORD }}
+        run: |
+          echo "Using JWT_KEY: $JWT_KEY"
+          echo "Using INVOKE_URL: $INVOKE_URL"
+          echo "Using SERVICE_KEY: $SERVICE_KEY"
+          echo "Using AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
+          echo "Using AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY"
+          echo "Using AWS_S3_BUCKET: $AWS_S3_BUCKET"
+          echo "Using URL: $RDS_HOST"
+          echo "Using USERNAME: $RDS_NAME"
+          echo "Using PASSWORD: $RDS_PASSWORD"
+          ./gradlew clean build --exclude-task test
 
       - name: Make zip file
         run: zip -r ./$GITHUB_SHA.zip .
