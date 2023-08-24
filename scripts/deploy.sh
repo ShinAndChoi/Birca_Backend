@@ -1,24 +1,44 @@
 #!/bin/bash
-BUILD_JAR=$(ls /home/ec2-user/action/build/libs/*.jar)
-JAR_NAME=$(basename $BUILD_JAR)
-echo "> build 파일명: $JAR_NAME" >> /home/ec2-user/action/deploy.log
 
-echo "> build 파일 복사" >> /home/ec2-user/action/deploy.log
-DEPLOY_PATH=/home/ec2-user/action/
-cp $BUILD_JAR $DEPLOY_PATH
+REPOSITORY=/home/ec2-user/build/libs/*.jar
+PROJECT_NAME=birca
 
-echo "> 현재 실행중인 애플리케이션 pid 확인" >> /home/ec2-user/action/deploy.log
-CURRENT_PID=$(pgrep -f $JAR_NAME)
+cd $REPOSITORY/$PROJECT_NAME/
 
-if [ -z $CURRENT_PID ]
-then
-  echo "> 현재 구동중인 애플리케이션이 없으므로 종료하지 않습니다." >> /home/ec2-user/action/deploy.log
+echo "> Git Pull"
+
+git pull
+
+echo "> 프로젝트 Build 시작"
+
+./gradlew build
+
+echo "> step1 디렉토리 이동"
+
+cd $REPOSITORY
+
+echo "> Build 파일 복사"
+
+cp $REPOSITORY/$PROJECT_NAME/build/libs/*.jar $REPOSITORY/
+
+echo "> 현재 구동중인 애플리케이션 pid 확인"
+
+CURRENT_PID=$(pgrep -f ${PROJECT_NAME}*.jar)
+
+echo "현재 구동 중인 애플리케이션 pid: $CURRENT_PID"
+
+if [ -z "$CURRENT_PID" ]; then
+   echo "> 현재 구동 중인 애플리케이션이 없으므로 종료하지 않습니다."
 else
-  echo "> kill -15 $CURRENT_PID"
-  kill -15 $CURRENT_PID
-  sleep 5
+   echo "> kill -15 $CURRENT_PID"
+   kill -15 $CURRENT_PID
+   sleep 5
 fi
 
-DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
-echo "> DEPLOY_JAR 배포"    >> /home/ec2-user/action/deploy.log
-nohup java -jar $DEPLOY_JAR >> /home/ec2-user/deploy.log 2>/home/ec2-user/action/deploy_err.log &
+echo "> 새 애플리케이션 배포"
+
+JAR_NAME=$(ls -tr $REPOSITORY/ | grep *.jar | tail -n 1)
+
+echo "> JAR Name: $JAR_NAME"
+
+nohup java -jar $REPOSITORY/$JAR_NAME 2>&1 &
