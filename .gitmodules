@@ -1,0 +1,3 @@
+[submodule "Birca_Submodule"]
+	path = Birca_Submodule
+	url = https://github.com/ShinAndChoi/Birca_Submodule.git
