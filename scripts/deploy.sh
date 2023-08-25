@@ -1,3 +1,6 @@
+REPOSITORY=/home/ec2-user/action
+PROJECT_NAME=birca-0.0.1-SNAPSHOT.
+
 cd $REPOSITORY/$PROJECT_NAME/
 
 echo "> Git Pull"
@@ -6,7 +9,7 @@ git pull
 
 echo "> 프로젝트 Build 시작"
 
-./gradlew build
+./gradlew clean build --exclude-task test
 
 echo "> 서브모듈 설정파일 가져오기"
 git submodule update
