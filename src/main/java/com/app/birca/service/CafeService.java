@@ -8,7 +8,6 @@ import com.app.birca.dto.request.SaveCafeRequest;
 import com.app.birca.dto.request.UpdateCafeRequest;
 import com.app.birca.dto.response.CafeResponse;
 import com.app.birca.dto.response.CafeSearchResponse;
-import com.app.birca.exception.businesslicense.BusinessRegistrationPendingException;
 import com.app.birca.exception.CafeNotFound;
 import com.app.birca.exception.UserNotFound;
 import com.app.birca.repository.BusinessLicenseRepository;
@@ -38,10 +37,6 @@ public class CafeService {
     public Long saveCafe(LoginUser loginUser, SaveCafeRequest request) throws IOException {
         User user = userRepository.findById(loginUser.getId())
                 .orElseThrow(UserNotFound::new);
-
-        if (!businessLicenseRepository.existsByUser(user)) {
-            throw new BusinessRegistrationPendingException();
-        }
 
         String imageUrl = s3Service.uploadImage(request.getFile());
 
