@@ -28,7 +28,6 @@ import static java.util.stream.Collectors.toList;
 @Transactional(readOnly = true)
 public class CafeService {
 
-    private final BusinessLicenseRepository businessLicenseRepository;
     private final UserRepository userRepository;
     private final CafeRepository cafeRepository;
     private final S3Service s3Service;
