@@ -21,6 +21,16 @@ public class OcrService {
     private final WebClientConfig webClientConfig;
 
     public BusinessLicenseResponse getBusinessLicenseInfo(MultipartFile file, String imageName) throws IOException {
+        Map<String, Object> requestBody = createRequestBody(file, imageName);
+        return webClientConfig.ocr().post()
+                .header("X-OCR-SECRET", "TUlRaXpkb21EU2RVd21JamJubm9laG9mQ1JKeHhQVHM=")
+                .bodyValue(requestBody)
+                .retrieve()
+                .bodyToMono(BusinessLicenseResponse.class)
+                .block();
+    }
+
+    private Map<String, Object> createRequestBody(MultipartFile file, String imageName) throws IOException {
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("version", "V2");
         requestBody.put("requestId", UUID.randomUUID().toString());
@@ -34,13 +44,7 @@ public class OcrService {
         images.add(imageInfo);
 
         requestBody.put("images", images);
-
-        return webClientConfig.ocr().post()
-                .header("X-OCR-SECRET", "TUlRaXpkb21EU2RVd21JamJubm9laG9mQ1JKeHhQVHM=")
-                .bodyValue(requestBody)
-                .retrieve()
-                .bodyToMono(BusinessLicenseResponse.class)
-                .block();
+        return requestBody;
     }
 
 }
