@@ -10,7 +10,6 @@ import com.app.birca.dto.response.CafeResponse;
 import com.app.birca.dto.response.CafeSearchResponse;
 import com.app.birca.exception.CafeNotFound;
 import com.app.birca.exception.UserNotFound;
-import com.app.birca.repository.BusinessLicenseRepository;
 import com.app.birca.repository.CafeRepository;
 import com.app.birca.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +43,7 @@ public class CafeService {
                 .introduction(request.getIntroduction())
                 .imageUrl(imageUrl)
                 .address(request.getAddress())
+                .contact(request.getContact())
                 .user(user)
                 .build();
 
@@ -61,7 +61,7 @@ public class CafeService {
         String imageUrl = s3Service.uploadImage(request.getFile());
 
         cafe.updateCafe(request.getCafeName(), request.getIntroduction(),
-                imageUrl, request.getAddress(), user);
+                imageUrl, request.getAddress(), request.getContact(), user);
     }
 
     //1. 아이돌 2. 아이돌 + 날짜 3. 아이돌 + 장소 4. 아이돌 + 날짜 + 장소 검색
