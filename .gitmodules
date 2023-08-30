@@ -1,3 +1,3 @@
-[submodule "yml_submodule"]
-	path = yml_submodule
-	url = https://github.com/ShinAndChoi/yml_submodule.git
+[submodule "submodule_yml"]
+	path = submodule_yml
+	url = https://github.com/ShinAndChoi/submodule_yml.git
