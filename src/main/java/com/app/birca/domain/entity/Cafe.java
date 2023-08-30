@@ -27,6 +27,7 @@ public class Cafe extends BaseEntity {
     private String introduction;
     private String imageUrl;
     private String address;
+    private String contact;
 
     @OneToMany(mappedBy = "cafe", cascade = ALL)
     private List<Reservation> reservations = new ArrayList<>();
@@ -36,19 +37,21 @@ public class Cafe extends BaseEntity {
     private User user;
 
     @Builder
-    public Cafe(String cafeName, String introduction, String imageUrl, String address, User user) {
+    public Cafe(String cafeName, String introduction, String imageUrl, String address, String contact, User user) {
         this.cafeName = cafeName;
         this.introduction = introduction;
         this.imageUrl = imageUrl;
         this.address = address;
+        this.contact = contact;
         this.user = user;
     }
 
-    public void updateCafe(String cafeName, String introduction, String imageUrl, String address, User user) {
+    public void updateCafe(String cafeName, String introduction, String imageUrl, String address, String contact, User user) {
         this.cafeName = cafeName;
         this.introduction = introduction;
         this.imageUrl = imageUrl;
         this.address = address;
+        this.contact = contact;
         this.user = user;
     }
 
