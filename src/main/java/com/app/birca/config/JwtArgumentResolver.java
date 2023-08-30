@@ -25,7 +25,6 @@ public class JwtArgumentResolver implements HandlerMethodArgumentResolver {
         log.info("resolveArgument 실행");
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         Long userId = (Long) request.getAttribute("userId");
-
         log.info("userId = {}", userId);
         return new LoginUser(userId);
     }
