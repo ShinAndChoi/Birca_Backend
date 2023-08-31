@@ -20,18 +20,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
-    public LoginResponse saveFromKakao(GetMemberInfoResponse userInfo) {
+    public Long saveFromKakao(GetMemberInfoResponse userInfo) {
         User user = User.builder()
                 .nickname(userInfo.getKakaoAccount().getProfile().getNickname())
                 .email(userInfo.getKakaoAccount().getEmail())
                 .build();
 
-        saveUser(user);
-
-        String accessToken = jwtService.generateAccessToken(user.getId());
-        String refreshToken = jwtService.generateRefreshToken(user.getId());
-
-        return LoginResponse.toLoginResponse(user.getNickname(), user.getEmail(), accessToken, refreshToken);
+        return saveUser(user);
     }
 
     public void updateRoleType(LoginUser loginUser, String roleType) {
@@ -40,10 +35,11 @@ public class UserService {
         user.updateRoleType(roleType);
     }
 
-    private void saveUser(User user) {
+    private Long saveUser(User user) {
         log.info("email = {}", user.getEmail());
-        userRepository.findByEmail(user.getEmail())
-                .orElseGet(() -> userRepository.save(user));
+        return userRepository.findByEmail(user.getEmail())
+                .map(User::getId)
+                .orElseGet(() -> userRepository.save(user).getId());
     }
 
 }
