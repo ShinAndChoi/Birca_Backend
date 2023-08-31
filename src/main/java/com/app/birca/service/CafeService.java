@@ -64,17 +64,6 @@ public class CafeService {
                 imageUrl, request.getAddress(), request.getContact(), user);
     }
 
-    //1. 아이돌 2. 아이돌 + 날짜 3. 아이돌 + 장소 4. 아이돌 + 날짜 + 장소 검색
-    public List<CafeSearchResponse> searchCafe(int page, CafeSearchRequest request) {
-        List<Cafe> cafes = cafeRepository.getCafeResults(page, request);
-        return cafes.stream().map(c -> CafeSearchResponse.builder()
-                        .cafeName(c.getCafeName())
-                        .address(c.getAddress())
-                        .imageUrl(c.getImageUrl())
-                        .build())
-                .collect(toList());
-    }
-
     //카페 상세 페이지
     public CafeResponse getCafeDetails(Long cafeId) {
         Cafe cafe = cafeRepository.findById(cafeId)
