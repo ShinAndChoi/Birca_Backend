@@ -26,10 +26,10 @@ public class UserService {
                 .email(userInfo.getKakaoAccount().getEmail())
                 .build();
 
+        saveUser(user);
+
         String accessToken = jwtService.generateAccessToken(user.getId());
         String refreshToken = jwtService.generateRefreshToken(user.getId());
-
-        saveUser(user);
 
         return LoginResponse.toLoginResponse(user.getNickname(), user.getEmail(), accessToken, refreshToken);
     }
