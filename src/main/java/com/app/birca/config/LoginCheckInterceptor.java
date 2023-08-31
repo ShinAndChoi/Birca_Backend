@@ -18,6 +18,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String accessToken = request.getHeader("Authorization");
+        log.info("accessToken = {}", accessToken);
 
         try {
             Long userId = jwtService.getSubject(accessToken);
