@@ -19,6 +19,7 @@ public class SearchController {
 
     @GetMapping("/cafes")
     public List<CafeSearchResponse> searchCafe(@RequestParam int page, @ModelAttribute @Valid CafeSearchRequest request) {
+        log.info("address = {}", request.getAddress());
         log.info("idol = {}", request.getIdolName());
         log.info("startDate = {} ", request.getStartDate());
         log.info("endDate = {} ", request.getEndDate());
