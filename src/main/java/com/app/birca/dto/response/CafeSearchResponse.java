@@ -6,15 +6,16 @@ import lombok.Getter;
 @Getter
 public class CafeSearchResponse {
 
+    private final Long cafeId;
     private final String cafeName;
+    private final String introduction;
     private final String address;
-    private final String imageUrl;
 
     @Builder
-    public CafeSearchResponse(String cafeName, String address, String imageUrl) {
+    public CafeSearchResponse(Long cafeId, String cafeName, String introduction, String address) {
+        this.cafeId = cafeId;
         this.cafeName = cafeName;
+        this.introduction = introduction;
         this.address = address;
-        this.imageUrl = imageUrl;
     }
-
 }
