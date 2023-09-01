@@ -23,9 +23,10 @@ public class SearchService {
     public List<CafeSearchResponse> getReservedCafe(int page, CafeSearchRequest request) {
         List<Cafe> cafes = cafeRepository.getCafeResults(page, request);
         return cafes.stream().map(c -> CafeSearchResponse.builder()
+                        .cafeId(c.getId())
                         .cafeName(c.getCafeName())
+                        .introduction(c.getIntroduction())
                         .address(c.getAddress())
-                        .imageUrl(c.getImageUrl())
                         .build())
                 .collect(toList());
     }
@@ -34,9 +35,10 @@ public class SearchService {
     public List<CafeSearchResponse> getAvailableCafe(int page, CafeSearchRequest request) {
         List<Cafe> cafes = cafeRepository.getCafeResults(page, request);
         return cafes.stream().map(c -> CafeSearchResponse.builder()
+                        .cafeId(c.getId())
                         .cafeName(c.getCafeName())
+                        .introduction(c.getIntroduction())
                         .address(c.getAddress())
-                        .imageUrl(c.getImageUrl())
                         .build())
                 .collect(toList());
     }
