@@ -6,10 +6,14 @@ import com.app.birca.dto.request.SaveCafeRequest;
 import com.app.birca.dto.request.UpdateCafeRequest;
 import com.app.birca.dto.response.CafeResponse;
 import com.app.birca.dto.response.CafeSearchResponse;
+import com.app.birca.dto.response.businesslicense.BusinessLicenseResponse;
+import com.app.birca.service.BusinessLicenseService;
 import com.app.birca.service.CafeService;
+import com.app.birca.service.OcrService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -20,23 +24,31 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CafeController {
 
+    private final BusinessLicenseService businessLicenseService;
     private final CafeService cafeService;
+    private final OcrService ocrService;
 
     @PostMapping("/cafe/register")
-    public Long saveCafe(@Login LoginUser loginUser, @ModelAttribute SaveCafeRequest request) throws IOException {
+    public Long saveCafe(@Login LoginUser loginUser, @RequestPart SaveCafeRequest request,
+                         @RequestPart MultipartFile businessLicense, @RequestPart List<MultipartFile> cafeImages) throws IOException {
         log.info("cafeName = {} ", request.getCafeName());
         log.info("introduction = {} ", request.getIntroduction());
-        log.info("file = {}", request.getFile().getOriginalFilename());
+        log.info("businessLicense = {}", businessLicense.getOriginalFilename());
         log.info("area = {}", request.getAddress());
-        return cafeService.saveCafe(loginUser, request);
+
+        businessLicenseService.uploadBusinessLicense(businessLicense);
+        BusinessLicenseResponse businessLicenseInfo = ocrService.getBusinessLicenseInfo(businessLicense, "사업자 등록증");
+        businessLicenseService.saveRegistrationNumber(loginUser, businessLicenseInfo);
+
+        return cafeService.saveCafe(loginUser, request, cafeImages);
     }
 
     @PatchMapping("/cafe/{cafeId}/update")
-    public void updateCafe(@PathVariable Long cafeId, @ModelAttribute UpdateCafeRequest request) throws IOException {
+    public void updateCafe(@PathVariable Long cafeId, @RequestPart UpdateCafeRequest request,
+                           @RequestPart List<MultipartFile> cafeImages) throws IOException {
         log.info("cafeName = {} ", request.getCafeName());
         log.info("introduction = {} ", request.getIntroduction());
-        log.info("file = {}", request.getFile().getOriginalFilename());
-        cafeService.updateCafe(cafeId, request);
+        cafeService.updateCafe(cafeId, request, cafeImages);
     }
 
     @GetMapping("/cafe/{cafeId}/details")
