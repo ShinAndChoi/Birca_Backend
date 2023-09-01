@@ -25,31 +25,31 @@ public class Cafe extends BaseEntity {
 
     private String cafeName;
     private String introduction;
-    private String imageUrl;
     private String address;
     private String contact;
 
     @OneToMany(mappedBy = "cafe", cascade = ALL)
     private List<Reservation> reservations = new ArrayList<>();
 
+    @OneToMany(mappedBy = "cafe", cascade = ALL)
+    private List<CafeImage> cafeImages = new ArrayList<>();
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
-    public Cafe(String cafeName, String introduction, String imageUrl, String address, String contact, User user) {
+    public Cafe(String cafeName, String introduction, String address, String contact, User user) {
         this.cafeName = cafeName;
         this.introduction = introduction;
-        this.imageUrl = imageUrl;
         this.address = address;
         this.contact = contact;
         this.user = user;
     }
 
-    public void updateCafe(String cafeName, String introduction, String imageUrl, String address, String contact, User user) {
+    public void updateCafe(String cafeName, String introduction, String address, String contact, User user) {
         this.cafeName = cafeName;
         this.introduction = introduction;
-        this.imageUrl = imageUrl;
         this.address = address;
         this.contact = contact;
         this.user = user;
