@@ -5,6 +5,7 @@ import com.app.birca.domain.entity.CafeImage;
 import com.app.birca.domain.entity.User;
 import com.app.birca.dto.request.LoginUser;
 import com.app.birca.dto.request.SaveCafeRequest;
+import com.app.birca.dto.request.SaveCafeRequestV2;
 import com.app.birca.dto.request.UpdateCafeRequest;
 import com.app.birca.dto.response.CafeResponse;
 import com.app.birca.dto.response.CafeSearchResponse;
@@ -36,6 +37,30 @@ public class CafeService {
 
     @Transactional
     public Long saveCafe(LoginUser loginUser, SaveCafeRequest request, List<MultipartFile> cafeImages) throws IOException {
+        User user = userRepository.findById(loginUser.getId())
+                .orElseThrow(UserNotFound::new);
+
+        Cafe cafe = Cafe.builder()
+                .cafeName(request.getCafeName())
+                .introduction(request.getIntroduction())
+                .address(request.getAddress())
+                .contact(request.getContact())
+                .user(user)
+                .build();
+
+        cafeRepository.save(cafe);
+
+        for (MultipartFile image : cafeImages) {
+            String imageUrl = s3Service.uploadImage(image);
+            CafeImage cafeImage = new CafeImage(imageUrl, cafe);
+            cafeImageRepository.save(cafeImage);
+        }
+
+        return cafe.getId();
+    }
+
+    @Transactional
+    public Long saveCafeV2(LoginUser loginUser, SaveCafeRequestV2 request, List<MultipartFile> cafeImages) throws IOException {
         User user = userRepository.findById(loginUser.getId())
                 .orElseThrow(UserNotFound::new);
 

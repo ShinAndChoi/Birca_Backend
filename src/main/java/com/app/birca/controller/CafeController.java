@@ -3,6 +3,7 @@ package com.app.birca.controller;
 import com.app.birca.config.Login;
 import com.app.birca.dto.request.LoginUser;
 import com.app.birca.dto.request.SaveCafeRequest;
+import com.app.birca.dto.request.SaveCafeRequestV2;
 import com.app.birca.dto.request.UpdateCafeRequest;
 import com.app.birca.dto.response.CafeResponse;
 import com.app.birca.dto.response.CafeSearchResponse;
@@ -29,18 +30,29 @@ public class CafeController {
     private final OcrService ocrService;
 
     @PostMapping("/cafe/register")
-    public Long saveCafe(@Login LoginUser loginUser, @RequestPart SaveCafeRequest request,
+    public Long saveCafe(@Login LoginUser loginUser, @ModelAttribute SaveCafeRequest request) throws IOException {
+        log.info("cafeName = {} ", request.getCafeName());
+        log.info("introduction = {} ", request.getIntroduction());
+        log.info("businessLicense = {}", request.getBusinessLicense().getOriginalFilename());
+        log.info("address = {}", request.getAddress());
+        log.info("contact = {}", request.getContact());
+
+        //businessLicenseService.uploadBusinessLicense(businessLicense);
+        //BusinessLicenseResponse businessLicenseInfo = ocrService.getBusinessLicenseInfo(businessLicense, "사업자 등록증");
+        //businessLicenseService.saveRegistrationNumber(loginUser, businessLicenseInfo);
+
+        return cafeService.saveCafe(loginUser, request, request.getCafeImages());
+    }
+
+    @PostMapping("/cafe/register/v2")
+    public Long saveCafe(@Login LoginUser loginUser, @RequestPart SaveCafeRequestV2 request,
                          @RequestPart MultipartFile businessLicense, @RequestPart List<MultipartFile> cafeImages) throws IOException {
         log.info("cafeName = {} ", request.getCafeName());
         log.info("introduction = {} ", request.getIntroduction());
         log.info("businessLicense = {}", businessLicense.getOriginalFilename());
         log.info("area = {}", request.getAddress());
 
-        businessLicenseService.uploadBusinessLicense(businessLicense);
-        BusinessLicenseResponse businessLicenseInfo = ocrService.getBusinessLicenseInfo(businessLicense, "사업자 등록증");
-        businessLicenseService.saveRegistrationNumber(loginUser, businessLicenseInfo);
-
-        return cafeService.saveCafe(loginUser, request, cafeImages);
+        return cafeService.saveCafeV2(loginUser, request, cafeImages);
     }
 
     @PatchMapping("/cafe/{cafeId}/update")
