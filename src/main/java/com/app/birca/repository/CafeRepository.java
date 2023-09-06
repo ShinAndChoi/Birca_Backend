@@ -9,9 +9,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface CafeRepository extends JpaRepository<Cafe, Long>, CafeRepositoryCustom {
-    List<Cafe> findAll();
 
     @Query("SELECT DISTINCT c FROM Cafe c JOIN c.reservations r " +
             "WHERE :selectedDate BETWEEN r.startDate AND r.endDate")
     List<Cafe> findBySelectedDate(@Param("selectedDate") LocalDate selectedDate);
+
+    //나의 카페
+    List<Cafe> findByUserId(Long userId);
+
 }
