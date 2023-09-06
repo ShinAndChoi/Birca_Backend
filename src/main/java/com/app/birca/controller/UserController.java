@@ -29,7 +29,7 @@ public class UserController {
         String generateAccessToken = jwtService.generateAccessToken(userId);
         String generateRefreshToken = jwtService.generateRefreshToken(userId);
 
-        return new LoginResponse(userInfo.getKakaoAccount().getProfile().getNickname(),
+        return LoginResponse.toLoginResponse(userInfo.getKakaoAccount().getProfile().getNickname(),
                 userInfo.getKakaoAccount().getEmail(), generateAccessToken, generateRefreshToken);
     }
 
