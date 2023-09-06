@@ -19,7 +19,7 @@ public class MyPageController {
 
     private final MyPageService myPageService;
 
-    @GetMapping("/myPage/reservedCafe")
+    @GetMapping("/myPage/reservedCafes")
     public List<ReservedCafeResponse> getMyReservedCafes(@Login LoginUser loginUser) {
         return myPageService.getMyReservedCafes(loginUser.getId());
     }
