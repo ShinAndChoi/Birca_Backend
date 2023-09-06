@@ -33,7 +33,8 @@ public class CafeController {
     public CafeIdResponse saveCafe(@Login LoginUser loginUser, @ModelAttribute SaveCafeRequest request) throws IOException {
         log.info("cafeName = {} ", request.getCafeName());
         log.info("introduction = {} ", request.getIntroduction());
-        log.info("businessLicense = {}", request.getBusinessLicense().getOriginalFilename());
+        log.info("businessLicense = {}", request.getBusinessLicense().get(0).getOriginalFilename());
+        log.info("cafeImages = {}", request.getCafeImages().get(0).getOriginalFilename());
         log.info("address = {}", request.getAddress());
         log.info("contact = {}", request.getContact());
 
