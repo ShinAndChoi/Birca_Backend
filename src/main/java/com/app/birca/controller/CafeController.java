@@ -5,9 +5,9 @@ import com.app.birca.dto.request.LoginUser;
 import com.app.birca.dto.request.SaveCafeRequest;
 import com.app.birca.dto.request.SaveCafeRequestV2;
 import com.app.birca.dto.request.UpdateCafeRequest;
+import com.app.birca.dto.response.CafeIdResponse;
 import com.app.birca.dto.response.CafeResponse;
 import com.app.birca.dto.response.CafeSearchResponse;
-import com.app.birca.dto.response.businesslicense.BusinessLicenseResponse;
 import com.app.birca.service.BusinessLicenseService;
 import com.app.birca.service.CafeService;
 import com.app.birca.service.OcrService;
@@ -30,7 +30,7 @@ public class CafeController {
     private final OcrService ocrService;
 
     @PostMapping("/cafe/register")
-    public Long saveCafe(@Login LoginUser loginUser, @ModelAttribute SaveCafeRequest request) throws IOException {
+    public CafeIdResponse saveCafe(@Login LoginUser loginUser, @ModelAttribute SaveCafeRequest request) throws IOException {
         log.info("cafeName = {} ", request.getCafeName());
         log.info("introduction = {} ", request.getIntroduction());
         log.info("businessLicense = {}", request.getBusinessLicense().getOriginalFilename());
@@ -41,18 +41,20 @@ public class CafeController {
         //BusinessLicenseResponse businessLicenseInfo = ocrService.getBusinessLicenseInfo(businessLicense, "사업자 등록증");
         //businessLicenseService.saveRegistrationNumber(loginUser, businessLicenseInfo);
 
-        return cafeService.saveCafe(loginUser, request, request.getCafeImages());
+        Long cafeId = cafeService.saveCafe(loginUser, request, request.getCafeImages());
+        return new CafeIdResponse(cafeId);
     }
 
     @PostMapping("/cafe/register/v2")
-    public Long saveCafe(@Login LoginUser loginUser, @RequestPart SaveCafeRequestV2 request,
+    public CafeIdResponse saveCafe(@Login LoginUser loginUser, @RequestPart SaveCafeRequestV2 request,
                          @RequestPart MultipartFile businessLicense, @RequestPart List<MultipartFile> cafeImages) throws IOException {
         log.info("cafeName = {} ", request.getCafeName());
         log.info("introduction = {} ", request.getIntroduction());
         log.info("businessLicense = {}", businessLicense.getOriginalFilename());
         log.info("area = {}", request.getAddress());
 
-        return cafeService.saveCafeV2(loginUser, request, cafeImages);
+        Long cafeId = cafeService.saveCafeV2(loginUser, request, cafeImages);
+        return new CafeIdResponse(cafeId);
     }
 
     @PatchMapping("/cafe/{cafeId}/update")
