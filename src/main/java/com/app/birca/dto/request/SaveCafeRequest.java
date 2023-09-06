@@ -13,6 +13,6 @@ public class SaveCafeRequest {
     private String introduction;
     private String address;
     private String contact;
-    private MultipartFile businessLicense;
+    private List<MultipartFile> businessLicense;
     private List<MultipartFile> cafeImages;
 }
