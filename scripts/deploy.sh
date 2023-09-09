@@ -1,4 +1,4 @@
-BUILD_JAR=$(ls /home/ec2-user/action/build/libs/birca-0.0.1-SNAPSHOT.jar)
+BUILD_JAR=$(ls /home/ec2-user/action/birca-0.0.1-SNAPSHOT.jar)
 JAR_NAME=$(basename $BUILD_JAR)
 echo "> build 파일명: $JAR_NAME" >> /home/ec2-user/action/deploy.log
 
