@@ -2,7 +2,6 @@ package com.app.birca.service;
 
 import com.app.birca.domain.entity.User;
 import com.app.birca.dto.request.LoginUser;
-import com.app.birca.dto.response.LoginResponse;
 import com.app.birca.dto.response.kakao.GetMemberInfoResponse;
 import com.app.birca.exception.UserNotFound;
 import com.app.birca.repository.UserRepository;
