@@ -20,16 +20,12 @@ public class Idol {
     private String idolName;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "idol_group_id")
+    private IdolGroup idolGroup;
 
-    public Idol(String idolName, User user) {
+    public Idol(String idolName, IdolGroup idolGroup) {
         this.idolName = idolName;
-        this.user = user;
-    }
-
-    public void updateIdolName(String idolName) {
-        this.idolName = idolName;
+        this.idolGroup = idolGroup;
     }
 
 }
