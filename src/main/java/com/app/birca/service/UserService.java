@@ -1,12 +1,12 @@
 package com.app.birca.service;
 
-import com.app.birca.domain.entity.Idol;
+import com.app.birca.domain.entity.FavoriteIdol;
 import com.app.birca.domain.entity.User;
 import com.app.birca.dto.request.LoginUser;
-import com.app.birca.dto.request.SaveIdolRequest;
+import com.app.birca.dto.request.SaveFavoriteIdolRequest;
 import com.app.birca.dto.response.kakao.GetMemberInfoResponse;
 import com.app.birca.exception.UserNotFound;
-import com.app.birca.repository.IdolRepository;
+import com.app.birca.repository.FavoriteIdolRepository;
 import com.app.birca.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-
 @Slf4j
 @Service
 @Transactional
@@ -24,7 +22,7 @@ import static java.util.stream.Collectors.toList;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final IdolRepository idolRepository;
+    private final FavoriteIdolRepository favoriteIdolRepository;
 
     public Long saveFromKakao(GetMemberInfoResponse userInfo) {
         User user = User.builder()
@@ -35,15 +33,12 @@ public class UserService {
         return saveUser(user);
     }
 
-    public void saveIdolName(Long userId, SaveIdolRequest request) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(UserNotFound::new);
-
-        List<Idol> idols = request.getIdolNames().stream()
-                .map(idolName -> new Idol(idolName, user))
-                .collect(toList());
-
-        idolRepository.saveAll(idols);
+    public void saveFavoriteIdol(SaveFavoriteIdolRequest request) {
+        List<String> idolNames = request.getIdolName();
+        idolNames.forEach(idolName -> {
+            FavoriteIdol favoriteIdol = new FavoriteIdol(idolName);
+            favoriteIdolRepository.save(favoriteIdol);
+        });
     }
 
     public void updateRoleType(LoginUser loginUser, String roleType) {
