@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -26,6 +29,9 @@ public class User extends BaseEntity {
 
     private String nickname;
     private String email;
+
+    @OneToMany
+    private List<FavoriteIdol> favoriteIdols = new ArrayList<>();
 
     @Builder
     public User(String nickname, String email) {
