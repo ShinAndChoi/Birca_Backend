@@ -23,8 +23,9 @@ public class FavoriteIdol {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public FavoriteIdol(String idolName) {
+    public FavoriteIdol(String idolName, User user) {
         this.idolName = idolName;
+        this.user = user;
     }
 
 }
