@@ -1,13 +1,12 @@
 package com.app.birca.domain.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -20,13 +19,14 @@ public class IdolGroup {
     @Column(name = "idol_group_id")
     private Long id;
 
-    private String groupName;
+    private String koreanName;
+    private String englishName;
+    private String imageUrl;
 
-    public IdolGroup(String groupName) {
-        this.groupName = groupName;
+    public IdolGroup(String koreanName, String englishName, String imageUrl) {
+        this.koreanName = koreanName;
+        this.englishName = englishName;
+        this.imageUrl = imageUrl;
     }
-
-    @OneToMany(mappedBy = "idolGroup", cascade = ALL)
-    private List<Idol> idols = new ArrayList<>();
 
 }
