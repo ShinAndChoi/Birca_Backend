@@ -2,16 +2,14 @@ package com.app.birca.controller;
 
 import com.app.birca.config.Login;
 import com.app.birca.dto.request.LoginUser;
+import com.app.birca.dto.request.SaveFavoriteIdolRequest;
 import com.app.birca.dto.response.LoginResponse;
 import com.app.birca.dto.response.kakao.GetMemberInfoResponse;
 import com.app.birca.service.JwtService;
 import com.app.birca.service.KakaoLoginService;
 import com.app.birca.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +29,11 @@ public class UserController {
 
         return LoginResponse.toLoginResponse(userInfo.getKakaoAccount().getProfile().getNickname(),
                 userInfo.getKakaoAccount().getEmail(), generateAccessToken, generateRefreshToken);
+    }
+
+    @PostMapping("/save/favoriteIdol")
+    public void saveFavoriteIdol(@RequestBody SaveFavoriteIdolRequest request) {
+        userService.saveFavoriteIdol(request);
     }
 
     @PatchMapping("/updateRoleType")
