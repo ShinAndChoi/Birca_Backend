@@ -33,10 +33,13 @@ public class UserService {
         return saveUser(user);
     }
 
-    public void saveFavoriteIdol(SaveFavoriteIdolRequest request) {
+    public void saveFavoriteIdol(LoginUser loginUser, SaveFavoriteIdolRequest request) {
+        User user = userRepository.findById(loginUser.getId())
+                .orElseThrow(UserNotFound::new);
+
         List<String> idolNames = request.getIdolName();
         idolNames.forEach(idolName -> {
-            FavoriteIdol favoriteIdol = new FavoriteIdol(idolName);
+            FavoriteIdol favoriteIdol = new FavoriteIdol(idolName, user);
             favoriteIdolRepository.save(favoriteIdol);
         });
     }

@@ -32,8 +32,8 @@ public class UserController {
     }
 
     @PostMapping("/save/favoriteIdol")
-    public void saveFavoriteIdol(@RequestBody SaveFavoriteIdolRequest request) {
-        userService.saveFavoriteIdol(request);
+    public void saveFavoriteIdol(@Login LoginUser loginUser, @RequestBody SaveFavoriteIdolRequest request) {
+        userService.saveFavoriteIdol(loginUser, request);
     }
 
     @PatchMapping("/updateRoleType")
