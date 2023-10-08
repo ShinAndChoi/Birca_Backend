@@ -37,11 +37,9 @@ public class UserService {
         User user = userRepository.findById(loginUser.getId())
                 .orElseThrow(UserNotFound::new);
 
-        List<String> idolNames = request.getIdolName();
-        idolNames.forEach(idolName -> {
-            FavoriteIdol favoriteIdol = new FavoriteIdol(idolName, user);
-            favoriteIdolRepository.save(favoriteIdol);
-        });
+        String idolName = request.getIdolName();
+        FavoriteIdol favoriteIdol = new FavoriteIdol(idolName, user);
+        favoriteIdolRepository.save(favoriteIdol);
     }
 
     public void updateRoleType(LoginUser loginUser, String roleType) {

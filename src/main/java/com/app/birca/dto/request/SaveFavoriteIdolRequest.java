@@ -6,5 +6,5 @@ import java.util.List;
 
 @Getter
 public class SaveFavoriteIdolRequest {
-    private List<String> idolName;
+    private String idolName;
 }
