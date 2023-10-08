@@ -17,14 +17,18 @@ public class Idol {
     @Column(name = "idol_id")
     private Long id;
 
-    private String idolName;
+    private String koreanName;
+    private String englishName;
+    private String imageUrl;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "idol_group_id")
     private IdolGroup idolGroup;
 
-    public Idol(String idolName, IdolGroup idolGroup) {
-        this.idolName = idolName;
+    public Idol(String koreanName, String englishName, String imageUrl, IdolGroup idolGroup) {
+        this.koreanName = koreanName;
+        this.englishName = englishName;
+        this.imageUrl = imageUrl;
         this.idolGroup = idolGroup;
     }
 
