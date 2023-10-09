@@ -17,8 +17,13 @@ public class OnBoardingController {
     private final OnBoardingService onBoardingService;
 
     @GetMapping("/idolGroups")
-    public List<IdolGroupResponse> getIdolGroups() {
-        return onBoardingService.getIdolGroups();
+    public List<IdolGroupResponse> findByAllIdolGroups() {
+        return onBoardingService.findAllIdolGroups();
+    }
+
+    @GetMapping("/idolGroup/search")
+    public IdolGroupResponse findBySearching(@RequestParam String idolGroup) {
+        return onBoardingService.findBySearching(idolGroup);
     }
 
     @GetMapping("/idols")
