@@ -22,7 +22,7 @@ public class OnBoardingService {
     private final IdolRepository idolRepository;
     private final IdolGroupRepository idolGroupRepository;
 
-    public List<IdolGroupResponse> getIdolGroups() {
+    public List<IdolGroupResponse> findAllIdolGroups() {
         List<IdolGroup> groups = idolGroupRepository.findAll();
         return groups.stream().map(g -> IdolGroupResponse.builder()
                 .koreanName(g.getKoreanName())
@@ -30,6 +30,17 @@ public class OnBoardingService {
                 .imageUrl(g.getImageUrl())
                 .build())
                 .collect(toList());
+    }
+
+    public IdolGroupResponse findBySearching(String idolGroup) {
+        IdolGroup group = idolGroupRepository.findByKoreanName(idolGroup)
+                .orElseThrow();
+
+        return IdolGroupResponse.builder()
+                .koreanName(group.getKoreanName())
+                .englishName(group.getEnglishName())
+                .imageUrl(group.getImageUrl())
+                .build();
     }
 
     public List<IdolResponse> getIdols(String idolGroup) {
