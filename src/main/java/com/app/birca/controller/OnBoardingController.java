@@ -22,8 +22,8 @@ public class OnBoardingController {
     }
 
     @GetMapping("/idolGroup/search")
-    public IdolGroupResponse findBySearching(@RequestParam String idolGroup) {
-        return onBoardingService.findBySearching(idolGroup);
+    public IdolGroupResponse findBySearching(@RequestParam String groupName) {
+        return onBoardingService.findBySearching(groupName);
     }
 
     @GetMapping("/idols")

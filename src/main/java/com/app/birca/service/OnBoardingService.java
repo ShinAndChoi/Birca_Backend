@@ -32,8 +32,8 @@ public class OnBoardingService {
                 .collect(toList());
     }
 
-    public IdolGroupResponse findBySearching(String idolGroup) {
-        IdolGroup group = idolGroupRepository.findByKoreanName(idolGroup)
+    public IdolGroupResponse findBySearching(String groupName) {
+        IdolGroup group = idolGroupRepository.findByKoreanName(groupName)
                 .orElseThrow();
 
         return IdolGroupResponse.builder()
