@@ -1,5 +1,6 @@
 package com.app.birca.service;
 
+import com.app.birca.domain.Category;
 import com.app.birca.domain.entity.Idol;
 import com.app.birca.domain.entity.IdolGroup;
 import com.app.birca.dto.response.IdolGroupResponse;
@@ -32,6 +33,17 @@ public class OnBoardingService {
                 .collect(toList());
     }
 
+    public List<IdolGroupResponse> findByCategory(String type) {
+        Category category = Category.fromString(type);
+        List<IdolGroup> groups = idolGroupRepository.findByCategory(category);
+        return groups.stream().map(g -> IdolGroupResponse.builder()
+                        .koreanName(g.getKoreanName())
+                        .englishName(g.getEnglishName())
+                        .imageUrl(g.getImageUrl())
+                        .build())
+                .collect(toList());
+    }
+
     public IdolGroupResponse findBySearching(String groupName) {
         IdolGroup group = idolGroupRepository.findByKoreanName(groupName)
                 .orElseThrow();
@@ -55,4 +67,5 @@ public class OnBoardingService {
                 .build())
                 .collect(toList());
     }
+
 }
