@@ -9,5 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class InsertIdolGroupRequest {
     private String koreanName;
     private String englishName;
+    private String type;
     private MultipartFile multipartFile;
 }
