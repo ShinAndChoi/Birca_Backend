@@ -26,6 +26,11 @@ public class OnBoardingController {
         return onBoardingService.findBySearching(groupName);
     }
 
+    @GetMapping("/idolGroup/search/category")
+    public List<IdolGroupResponse> findByCategory(@RequestParam String type) {
+        return onBoardingService.findByCategory(type);
+    }
+
     @GetMapping("/idols")
     public List<IdolResponse> getIdols(@RequestParam String groupName) {
         return onBoardingService.getIdols(groupName);
