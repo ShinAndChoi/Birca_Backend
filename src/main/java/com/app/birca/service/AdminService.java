@@ -1,5 +1,6 @@
 package com.app.birca.service;
 
+import com.app.birca.domain.Category;
 import com.app.birca.domain.entity.Idol;
 import com.app.birca.domain.entity.IdolGroup;
 import com.app.birca.dto.request.IdolNameRequest;
@@ -30,8 +31,11 @@ public class AdminService {
 
         String koreanName = request.getKoreanName();
         String englishName = request.getEnglishName();
-        IdolGroup group = new IdolGroup(koreanName, englishName, imageUrl);
-        idolGroupRepository.save(group);
+        String type = request.getType();
+        Category category = Category.fromString(type);
+        IdolGroup idolGroup = new IdolGroup(koreanName, englishName, imageUrl, category);
+
+        idolGroupRepository.save(idolGroup);
     }
 
     public void saveIdol(InsertIdolRequest request) throws IOException {
@@ -54,6 +58,5 @@ public class AdminService {
         Idol idol = new Idol(koreanName, englishName, imageUrl, idolGroup);
         idolRepository.save(idol);
     }
-
 
 }
