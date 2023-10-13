@@ -23,6 +23,7 @@ public class Cafe extends BaseEntity {
     @Column(name = "cafe_id")
     private Long id;
 
+    private String ownerName;
     private String cafeName;
     private String introduction;
     private String address;
@@ -39,7 +40,9 @@ public class Cafe extends BaseEntity {
     private User user;
 
     @Builder
-    public Cafe(String cafeName, String introduction, String address, String contact, User user) {
+    public Cafe(String ownerName, String cafeName, String introduction,
+                String address, String contact, User user) {
+        this.ownerName = ownerName;
         this.cafeName = cafeName;
         this.introduction = introduction;
         this.address = address;
