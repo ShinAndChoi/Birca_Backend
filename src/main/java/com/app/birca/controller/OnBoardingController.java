@@ -42,6 +42,9 @@ public class OnBoardingController {
 
     @PostMapping("/save/cafeInform")
     public void saveCafeInform(@Login LoginUser loginUser, @ModelAttribute SaveCafeInformRequest request) throws IOException {
+        log.info("cafeName", request.getCafeName());
+        log.info("contactNumber", request.getContactNumber());
+        log.info("ownerName", request.getOwnerName());
         log.info("businessLicense file Name = {}", request.getBusinessLicense().getOriginalFilename());
         onBoardingService.saveCafeInform(loginUser, request);
     }
