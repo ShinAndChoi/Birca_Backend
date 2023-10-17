@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum RoleType {
 
-    FAN("fan"), CAFE_OWNER("cafeOwner"), ADMIN("admin");
+    NORMAL("fan"), CAFE_OWNER("cafeOwner"), ADMIN("admin");
 
     private String type;
 
