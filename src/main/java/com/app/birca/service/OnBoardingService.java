@@ -1,7 +1,6 @@
 package com.app.birca.service;
 
 import com.app.birca.domain.Category;
-import com.app.birca.domain.RoleType;
 import com.app.birca.domain.entity.Cafe;
 import com.app.birca.domain.entity.Idol;
 import com.app.birca.domain.entity.IdolGroup;
@@ -10,12 +9,8 @@ import com.app.birca.dto.request.LoginUser;
 import com.app.birca.dto.request.SaveCafeInformRequest;
 import com.app.birca.dto.response.IdolGroupResponse;
 import com.app.birca.dto.response.IdolResponse;
-import com.app.birca.dto.response.businesslicense.BusinessLicenseResponse;
 import com.app.birca.exception.UserNotFound;
-import com.app.birca.repository.CafeRepository;
-import com.app.birca.repository.IdolGroupRepository;
-import com.app.birca.repository.IdolRepository;
-import com.app.birca.repository.UserRepository;
+import com.app.birca.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +31,8 @@ public class OnBoardingService {
     private final IdolRepository idolRepository;
     private final IdolGroupRepository idolGroupRepository;
     private final BusinessLicenseService businessLicenseService;
+    private final BusinessLicenseRepository businessLicenseRepository;
+    private final S3Service s3Service;
     private final OcrService ocrService;
 
     public List<IdolGroupResponse> findAllIdolGroups() {
@@ -97,6 +94,8 @@ public class OnBoardingService {
         String cafeName = request.getCafeName();
         String contactNumber = request.getContactNumber();
         MultipartFile businessLicense = request.getBusinessLicense();
+
+        s3Service.uploadImage(businessLicense);
 
 //        businessLicenseService.uploadBusinessLicense(businessLicense);
 //        BusinessLicenseResponse businessLicenseInfo = ocrService.getBusinessLicenseInfo(businessLicense, "사업자 등록증");
