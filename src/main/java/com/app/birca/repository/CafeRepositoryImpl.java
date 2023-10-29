@@ -34,9 +34,9 @@ public class CafeRepositoryImpl implements CafeRepositoryCustom {
         }
 
         //장소 검색
-        if (request.getAddress() != null) {
-            predicate.and(cafe.address.eq(request.getAddress()));
-        }
+//        if (request.getAddress() != null) {
+//            predicate.and(cafe.address.eq(request.getAddress()));
+//        }
 
         return queryFactory
                 .selectFrom(cafe)

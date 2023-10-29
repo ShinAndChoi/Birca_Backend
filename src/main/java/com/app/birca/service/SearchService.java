@@ -26,7 +26,6 @@ public class SearchService {
                         .cafeId(c.getId())
                         .cafeName(c.getCafeName())
                         .introduction(c.getIntroduction())
-                        .address(c.getAddress())
                         .build())
                 .collect(toList());
     }
@@ -38,7 +37,6 @@ public class SearchService {
                         .cafeId(c.getId())
                         .cafeName(c.getCafeName())
                         .introduction(c.getIntroduction())
-                        .address(c.getAddress())
                         .build())
                 .collect(toList());
     }

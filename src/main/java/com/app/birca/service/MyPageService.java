@@ -28,7 +28,6 @@ public class MyPageService {
         return reservations.stream().map(r -> ReservedCafeResponse.builder()
                         .cafeId(r.getCafe().getId())
                         .cafeName(r.getCafe().getCafeName())
-                        .address(r.getCafe().getAddress())
                         .introduction(r.getCafe().getIntroduction())
                         .build())
                 .collect(toList());
@@ -41,7 +40,6 @@ public class MyPageService {
                         .cafeName(c.getCafeName())
                         .introduction(c.getIntroduction())
                         .cafeId(c.getId())
-                        .address(c.getAddress())
                         .imageUrl(c.getCafeImages().stream().map(i -> i.getImageUrl())
                                 .collect(toList()))
                         .build())
