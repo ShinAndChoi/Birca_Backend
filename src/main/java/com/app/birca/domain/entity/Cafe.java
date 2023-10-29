@@ -26,8 +26,12 @@ public class Cafe extends BaseEntity {
     private String ownerName;
     private String cafeName;
     private String introduction;
-    private String address;
     private String contact;
+    private int capacity;
+    private int price;
+    private Double xAxis;
+    private Double yAxis;
+    private String area;
 
     @OneToMany(mappedBy = "cafe", cascade = ALL)
     private List<Reservation> reservations = new ArrayList<>();
@@ -35,27 +39,35 @@ public class Cafe extends BaseEntity {
     @OneToMany(mappedBy = "cafe", cascade = ALL)
     private List<CafeImage> cafeImages = new ArrayList<>();
 
+    @OneToMany(mappedBy = "cafe", cascade = ALL)
+    private List<ReservationAvailability> reservationAvailabilities = new ArrayList<>();
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
-    public Cafe(String ownerName, String cafeName, String introduction,
-                String address, String contact, User user) {
+    public Cafe(String ownerName, String cafeName, String introduction, String contact,
+                int capacity, int price, Double xAxis, Double yAxis, String area, User user) {
         this.ownerName = ownerName;
         this.cafeName = cafeName;
         this.introduction = introduction;
-        this.address = address;
         this.contact = contact;
+        this.capacity = capacity;
+        this.price = price;
+        this.xAxis = xAxis;
+        this.yAxis = yAxis;
+        this.area = area;
         this.user = user;
     }
 
-    public void updateCafe(String cafeName, String introduction, String address, String contact, User user) {
+    public void updateCafe(String ownerName, String cafeName, String introduction,
+                           String contact, int capacity, int price, Location location, User user) {
         this.cafeName = cafeName;
         this.introduction = introduction;
-        this.address = address;
         this.contact = contact;
-        this.user = user;
+        this.capacity = capacity;
+        this.price = price;
     }
 
 }
