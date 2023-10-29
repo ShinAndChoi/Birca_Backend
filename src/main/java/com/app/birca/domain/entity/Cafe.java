@@ -62,7 +62,7 @@ public class Cafe extends BaseEntity {
     }
 
     public void updateCafe(String ownerName, String cafeName, String introduction,
-                           String contact, int capacity, int price, Location location, User user) {
+                           String contact, int capacity, int price, User user) {
         this.cafeName = cafeName;
         this.introduction = introduction;
         this.contact = contact;
